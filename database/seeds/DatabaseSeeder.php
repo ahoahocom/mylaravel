@@ -3,6 +3,10 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
+use Faker\Factory as Faker;
+use Carbon\Carbon;
+use App\Article;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,8 +18,25 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call('UserTableSeeder');
+        $this->call('ArticleTableSeeder');
 
         Model::reguard();
     }
+}
+
+class ArticleTableSeeder extends Seeder
+{
+  public function run(){
+    DB::table('articles')->delete();
+
+    $faker = Faker::create('en_US');
+
+    for ($i = 0; $i < 10; $i++){
+      Article::create([
+        'title' => $faker->sentence(),
+        'body' => $faker->paragraph(),
+        'published_at' => Carbon::today()
+      ]);
+    }
+  }
 }

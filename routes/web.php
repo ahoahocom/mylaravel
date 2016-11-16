@@ -15,4 +15,7 @@ Route::get('/', function () {
     return View::make('welcome');
 });
 
+Route::get('articles', 'ArticlesController@index');
+Route::get('articles/{id}', 'ArticlesController@show');
+
 Route::resource('posts', 'postController');
