@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Article;
 
-use App\Http\Requests;
+use App\Http\Requests\ArticleRequest;
 use App\Http\Controllers\Controller;
 
 class ArticlesController extends Controller
 {
     public function index() {
-      $articles = Article::all();
+      $articles = Article::latest('published_at')->published()->get();
 
       return view('articles.index', compact('articles'));
     }
@@ -27,17 +27,26 @@ class ArticlesController extends Controller
       return view('articles.create');
     }
 
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-      $rules = [
-        'title' => 'required|min:3',
-        'body' => 'required',
-        'published_at' => 'required|date'
-      ];
-      $this->validate($request, $rules);
-
       Article::create($request->all());
 
       return redirect('articles');
+    }
+
+    public function edit($id)
+    {
+      $article = Article::findOrFail($id);
+
+      return view('articles.edit', compact('article'));
+    }
+
+    public function update ($id, ArticleRequest $request)
+    {
+      $article = Article::findOrFail($id);
+
+      $article->update($request->all());
+
+      return redirect(url('articles', [$article->$id]));
     }
 }
