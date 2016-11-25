@@ -7,6 +7,8 @@
 </head>
 <body>
   <div class="container">
+    @if (Session::has('flash_message'))
+      <div class="alert alert-success">{{}}
     @yield('content')
   </div>
 
