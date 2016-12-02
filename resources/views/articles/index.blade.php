@@ -5,12 +5,12 @@
 
   <hr/>
 
-  {!! link_to('articles/create', '新規作成', ['class' => 'btn btn-primary']) !!}
+  {!! link_to(route('articles.create'), '新規作成', ['class' => 'btn btn-primary']) !!}
 
   @foreach($articles as $article)
     <article>
       <h2>
-        <a href="{{url('articles', $article->id) }}">
+        <a href="{{route('articles.show', [$article->id]) }}">
           {{$article->title}}
         </a>
       </h2>
